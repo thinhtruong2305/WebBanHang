@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+xmlns:sec="https://www.thymeLeaf.org/thymeLeaf-extras-springsecurity5">
+
+<head>
+</head>
+
+<body>
+  <div >
+    <div id="tbodyUser" th:fragment="usertbody" class="card-body">
+      <div id="table" class="table-editable">
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+      <thead>
+        <tr>
+          <th class="text-center">Id User</th>
+          <th class="text-center">Email</th>
+          <th class="text-center">Display Name</th>
+          <th class="text-center">Role</th>
+          <th class="text-center">Enable</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+        <tbody >
+            <tr th:each=" listuser : ${list}">
+              <td th:text="${listuser.getUserId()}"></td>
+              <td th:text="${listuser.getEmail()}"></td>
+              <td th:text="${listuser.getDisplayName()}"></td>
+              <td th:text="${listuser.getRole()=='ROLE_ADMIN'?'Admin':'User'}"></td>
+              <td >
+                <i th:if="${listuser.isEnable()}" style="color: green;font-size: 25px;" class="fas fa-dot-circle"></i>
+                <i th:unless="${listuser.isEnable()}" style="color: red;font-size: 25px;" class="fas fa-dot-circle"></i>
+              </td>
+              <td> 
+                <span><a type="button" class="btn btn-warning btn-rounded btn-sm my-0 waves-effect waves-light" th:href="@{/Admin/User/Update?id={id}(id=${listuser.getUserId()})}">
+                    Update
+                </a></span>
+                <span><a type="button" th:attr="onclick='return Del(\'' + ${listuser.getEmail()} +  '\');'" class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light" th:href="@{/Admin/User/Delete?id={id}(id=${listuser.getUserId()})}">
+                    Remove
+                </a></span>
+              </td>
+            </tr>
+        </tbody>
+    </table>
+    <ul class="pagination justify-content-center" style="margin:20px 0; cursor: pointer;">
+      <li th:if="${list.pageable.pageNumber}>0"class="page-item"><a class="page-link">« First</a></li>
+      <li th:if="${list.pageable.pageNumber}>0" class="page-item"><a class="page-link">« Prev</a></li>
+      <li th:if="${list.totalPages > 0}" th:each="pageNumber : ${pageNumbers}" class="page-item"  th:classappend="${list.pageable.pageNumber}+1==${pageNumber}?'active':''"><a class="page-link" th:text="${pageNumber}"></a></li>
+      <li  th:unless="${list.last}" class="page-item" th:value="${list.totalPages}"><a class="page-link">Next »</a></li>
+      <li id="lastPages" th:unless="${list.last}" class="page-item" th:value="${list.totalPages}"><a class="page-link">Last »</a></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

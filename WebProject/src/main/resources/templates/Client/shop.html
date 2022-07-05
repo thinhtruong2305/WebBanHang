@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+layout:decorate="~{Layouts/clientlayout.html}">
+<head>
+    <style>
+        .activepage{
+           background-color: #7fad39; 
+        }
+    </style>
+</head>
+
+<body>
+    <div layout:fragment="content" >
+    <section class="hero hero-normal">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="hero__categories">
+                                <div class="hero__categories__all">
+                                    <i class="fa fa-bars"></i> <span>All departments</span>
+                                </div>
+                                <ul>
+                                    <li><a href="#">Fresh Meat</a></li>
+                                    <li><a href="#">Vegetables</a></li>
+                                    <li><a href="#">Fruit & Nut Gifts</a></li>
+                                    <li><a href="#">Fresh Berries</a></li>
+                                    <li><a href="#">Ocean Foods</a></li>
+                                    <li><a href="#">Butter & Eggs</a></li>
+                                    <li><a href="#">Fastfood</a></li>
+                                    <li><a href="#">Fresh Onion</a></li>
+                                    <li><a href="#">Papayaya & Crisps</a></li>
+                                    <li><a href="#">Oatmeal</a></li>
+                                    <li><a href="#">Fresh Bananas</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="hero__search">
+                                <div class="hero__search__form">
+                                    <form action="#">
+                                        <div class="hero__search__categories">
+                                            All Categories <span class="arrow_carrot-down"></span>
+                                        </div>
+                                        <input type="text" placeholder="What do yo u need?">
+                                        <button type="submit" class="site-btn">SEARCH</button>
+                                    </form>
+                                </div>
+                                <div class="hero__search__phone">
+                                    <div class="hero__search__phone__icon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <div class="hero__search__phone__text">
+                                        <h5>+65 11.188.888</h5>
+                                        <span>support 24/7 time</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+    <section class="breadcrumb-section set-bg"
+			data-setbg="/Client/img/breadcrumb.jpg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 text-center">
+						<div class="breadcrumb__text">
+							<h2>Shoping</h2>
+							<div class="breadcrumb__option">
+								<a th:href="@{/Home}">Home</a> <span>Shop</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+        <section class="product spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5">
+                        <div class="sidebar">
+                            <div class="sidebar__item">
+                                <h4>Department</h4>
+                                <ul>
+                                    <li><a href="#">Fresh Meat</a></li>
+                                    <li><a href="#">Vegetables</a></li>
+                                    <li><a href="#">Fruit & Nut Gifts</a></li>
+                                    <li><a href="#">Fresh Berries</a></li>
+                                    <li><a href="#">Ocean Foods</a></li>
+                                    <li><a href="#">Butter & Eggs</a></li>
+                                    <li><a href="#">Fastfood</a></li>
+                                    <li><a href="#">Fresh Onion</a></li>
+                                    <li><a href="#">Papayaya & Crisps</a></li>
+                                    <li><a href="#">Oatmeal</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-7">
+                        <div class="product__discount">
+                            <div class="section-title product__discount__title">
+                                <h2>Sale Off</h2>
+                            </div>
+                            <div class="row">
+                                <div class="product__discount__slider owl-carousel">
+                                    <div th:each="listDiscount : ${listDiscount}"  class="col-lg-4">
+                                        <div class="product__discount__item">
+                                            <div style="border: 1px solid rgb(229 216 216)" class="product__discount__item__pic set-bg"
+                                                th:data-setbg="@{${listDiscount.photosImagePath}}">
+                                                <div class="product__discount__percent" th:text="'-'+${listDiscount.getDiscount()}+'%'"></div>
+                                                <ul class="product__item__pic__hover">
+                                                    <li><a th:href="@{/Client/Product/Shopdetail?id={id}(id=${listDiscount.getProductId()})}"><i class="fa fa-retweet"></i></a></li>
+                                                    <li><a th:href="@{/Client/ShoppingCart/Add/{id} (id = ${listDiscount.productId})}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="product__discount__item__text">
+                                                <span th:text="${listDiscount.getCategory().getName()}"></span>
+                                                <h5><a th:href="@{/Client/Product/Shopdetail?id={id}(id=${listDiscount.getProductId()})}" th:text="${listDiscount.getName()}"></a></h5>
+                                                <div class="product__item__price" th:text="${listDiscount.getPrice()}-${listDiscount.getPrice()}*${listDiscount.getDiscount()}/100+' đ'"><span th:text="${listDiscount.getPrice()}+'đ'"></span></div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <div class="row">
+                        <div class="row col-lg-12 col-md-8" >
+                            <div th:each="list : ${list}" class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item" >
+                                    <div style="border: 1px solid rgb(229 216 216)" class="product__item__pic set-bg" th:data-setbg="@{${list.photosImagePath}}">
+                                        <ul class="product__item__pic__hover">
+                                            <li><a th:href="@{/Client/Product/Shopdetail?id={id}(id=${list.getProductId()})}"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a th:href="@{/Client/ShoppingCart/Add/{id} (id = ${list.getProductId()})}"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a th:href="@{/Client/Product/Shopdetail?id={id}(id=${list.getProductId()})}" th:text="${list.getName()}"></a></h6>
+                                        <h5 th:text="${list.getPrice()}-${list.getPrice()}*${list.getDiscount()}/100+' đ'"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="product__pagination">
+                        <a th:if="${list.pageable.pageNumber}>0" style="width: 45px;" th:href="@{/Client/Product/Shop?page=0}">« First</a>
+                        <a th:if="${list.pageable.pageNumber}>0" style="width: 45px;" th:href="@{/Client/Product/Shop?page={page}(page=${list.number}-1)}">« Prev</a>
+                        <a th:if="${list.totalPages > 1}" th:each="pageNumber : ${pageNumbers}" th:classappend="${list.number}+1==${pageNumber}?'activepage':''" th:href="@{/Client/Product/Shop?page={page}(page=${pageNumber}-1)}" th:text="${pageNumber}"></a>
+                        <a th:unless="${list.last}" th:value="${list.totalPages}" style="width: 45px;" th:href="@{/Client/Product/Shop?page={page}(page=${list.number}+1)}">Next »</a>
+                        <a id="lastPages" th:unless="${list.last}" th:value="${list.totalPages}" th:href="@{/Client/Product/Shop?page={page}(page=${list.totalPages}-1)}" style="width: 45px;">Last »</a>
+                    </div> 
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>

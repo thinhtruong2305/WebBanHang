@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin | Order detail</title>
+<style type="text/css">
+#table {
+	width: 950px;
+	overflow-x: auto;
+	font-size: 35px;
+	font-family: "Tahoma";
+	padding-top: 50px;
+}
+
+#head {
+	font-weight: bold;
+}
+
+#pagination {
+	padding-top: 50px;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1>Chi tiết hóa đơn</h1>
+		<form th:action="@{/Admin/Order/Save}" method="post"
+			th:object="${order}">
+			<div class="d-grid gap-2 d-md-flex justify-content-center">
+				<a class="btn btn-primary" th:href="@{/Admin/Order/Show}"
+				type="button">Quay lại</a>
+				<button class="btn btn-primary" type="submit">Lưu</button>
+			</div>
+			<div class="form-group row">
+				<div class="input-group input-group-lg">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Mã hóa đơn: </span>
+					</div>
+					<input th:field="*{orderId}" class="form-control"
+						aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+						readonly />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="input-group input-group-lg">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Mã và tên: </span>
+					</div>
+					<input
+						th:field="*{user}" th:value="${order.user}"
+						class="form-control" aria-label="Large"
+						aria-describedby="inputGroup-sizing-sm" readonly />
+					<input 
+						th:value="${order.user.displayName}" 
+						class="form-control" aria-label="Large"
+						aria-describedby="inputGroup-sizing-sm"
+						readonly/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="input-group input-group-lg">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Địa chỉ: </span>
+					</div>
+					<input th:field="*{address}" class="form-control"
+						aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+						readonly />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="input-group input-group-lg">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Điện thoại: </span>
+					</div>
+					<input th:field="*{phone}" class="form-control"
+						aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+						readonly />
+				</div>
+			</div>
+			<div th:switch="${order.status}">
+				<div th:case="'ĐÃ THANH TOÁN'">
+					<div class="form-group row">
+						<div class="input-group input-group-lg">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Trạng thái: </span>
+							</div>
+							<input th:field="*{status}" class="form-control"
+								aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+								readonly />
+						</div>
+					</div>
+				</div>
+				<div th:case="'CHƯA THANH TOÁN VÀ CHƯA GIAO HÀNG'">
+					<div class="form-group">
+						<div class="form-floating">
+							<select name="status" class="form-select" id="floatingSelect"
+								aria-label="Floating label select example">
+								<option th:field="*{status}" th:each="status:${statuses}"
+									th:value="${status}" th:text="${status}"></option>
+							</select> <label for="floatingSelect">Status</label>
+						</div>
+					</div>
+				</div>
+				<div th:case="'ĐANG GIAO HÀNG'">
+					<div class="form-group">
+						<div class="form-floating">
+							<select name="status" class="form-select" id="floatingSelect"
+								aria-label="Floating label select example">
+								<option th:field="*{status}" th:each="status:${statuses}"
+									th:value="${status}" th:text="${status}"></option>
+							</select> <label for="floatingSelect">Status</label>
+						</div>
+					</div>
+				</div>
+				<div th:case="'ĐÃ GIAO HÀNG THÀNH CÔNG'">
+					<div class="form-group">
+						<div class="form-floating">
+							<select name="status" class="form-select" id="floatingSelect"
+								aria-label="Floating label select example">
+								<option th:field="*{status}" th:each="status:${statuses}"
+									th:value="${status}" th:text="${status}"></option>
+							</select> <label for="floatingSelect">Status</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="input-group input-group-lg">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Ngày tạo: </span>
+					</div>
+					<input type="date" th:field="*{creationDate}" class="form-control"
+						aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+						readonly />
+				</div>
+			</div>
+			<div th:switch="${order.status}">
+				<div th:case="'ĐÃ THANH TOÁN'">
+					<div class="form-group row">
+						<div class="input-group input-group-lg">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Ngày giao: </span>
+							</div>
+							<input type="date" th:field="*{deliveryDate}"
+								class="form-control" aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm" readonly />
+						</div>
+					</div>
+				</div>
+				<div th:case="'ĐANG GIAO HÀNG'">
+					<div class="form-group row">
+						<div class="input-group input-group-lg">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Ngày giao: </span>
+							</div>
+							<input type="date" th:field="*{deliveryDate}"
+								class="form-control" aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm" readonly />
+						</div>
+					</div>
+				</div>
+				<div th:case="'ĐÃ GIAO HÀNG THÀNH CÔNG'">
+					<div class="form-group row">
+						<div class="input-group input-group-lg">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Ngày giao: </span>
+							</div>
+							<input type="date" th:field="*{deliveryDate}"
+								class="form-control" aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm" readonly />
+						</div>
+					</div>
+				</div>
+				<div th:case="'CHƯA THANH TOÁN VÀ CHƯA GIAO HÀNG'">
+					<div class="form-group row">
+						<div class="input-group input-group-lg">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Ngày giao: </span>
+							</div>
+							<input type="date" th:field="*{deliveryDate}"
+								class="form-control" aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="container">
+			<div id="table">
+				<table class="table table-borderless table-striped table-dark table-sm">
+					<caption>List of Order detail</caption>
+					<thead id="head" class="table-info">
+						<th>Mã hóa đơn chi tiết</th>
+						<th>Tên sản phẩm</th>
+						<th>Số lượng</th>
+						<th>Tổng tiền</th>
+					</thead>
+					<tbody th:each="orderDetail : ${orderDetails.pageList}">
+						<td th:text="${orderDetail.OrderDetailId}"></td>
+						<td th:text="${orderDetail.product.name}"></td>
+						<td th:text="${orderDetail.quantity}"></td>
+						<td th:text="${orderDetail.total}"></td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<nav id="pagination" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li
+					th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+					<a class="page-link" th:href="@{/Admin/Order/Show}">First</a>
+				</li>
+				<li
+					th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+					<a class="page-link" aria-label="Previous"
+					th:href="@{|${baseUrl}${currentIndex - 1}|}"
+					title='Go to previous page'> <span aria-hidden="true">«</span>
+						<span class="sr-only">Previous</span>
+				</a>
+				</li>
+				<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+					th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+					<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+						th:text='${item}'>1</span>
+				</a>
+				</li>
+				<li
+					th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+					<a class="page-link" aria-label="Next"
+					th:href="@{|${baseUrl}${currentIndex + 1}|}"
+					title='Go to next page'> <span aria-hidden="true">»</span> <span
+						class="sr-only">Next</span>
+				</a>
+				</li>
+				<li
+					th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+					<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>

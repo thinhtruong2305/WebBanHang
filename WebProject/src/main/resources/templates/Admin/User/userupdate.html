@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+  <style>
+    .form-control{
+    border: 1px solid #dee2e6;
+    font-weight: 400;
+    font-size: 0.875rem;
+    border-radius: 25px;
+    height: 3rem; 
+  }
+  </style>
+</head>
+<body>
+  <!-- Editable table -->
+<div layout:fragment="content">
+  <div class="container rounded bg-white mt-2 mb-5">
+    <div class="row">
+      <div class="d-flex flex-row align-items-center back mr-1 mb-1 mt-3" style="color: blue;" onclick="goBack()" ><i class="fa fa-arrow-left mr-1 " aria-hidden="true"></i>
+        <a >Back to previous page</a>
+      </div>
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLhlPE0gXGOoAq3qU3GHKSS2Ih3VQDLzZ6GQ&usqp=CAU"><span class="font-weight-bold" th:text="${user.getDisplayName()}"></span><span class="text-black-50" th:text="${user.getEmail()}"></span><span> </span></div>
+        </div>
+        <div class="col-md-8" >
+          <div class="p-3 py-5">
+             <form th:action="@{/Admin/User/Update}" method="post" th:object="${user}">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <label class="form-check-label" th:text="'User ID: '+${user.getUserId()}"></label>
+                <input th:value="${user.getUserId()}" th:field="*{userId}" style="display:none"></input>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">Name</label><input th:field="*{displayName}" th:value="${user.getDisplayName()}" type="text" class="form-control" placeholder="display name" required ></div>
+                      <div class="col-md-3"><label class="form-check-label " >Admin</label><div class="mt-3"><input th:field="*{role}" th:checked="${user.getRole()=='ROLE_ADMIN'}" style = "height: 25px; width: 25px;" type="radio" name="role" value="ROLE_ADMIN"></div></div>
+                      <div class="col-md-3"><label class="form-check-label ">User</label><div class="mt-3"><input th:field="*{role}" th:checked="${user.getRole()=='ROLE_USER'}" style = "height: 25px; width: 25px;" type="radio" name="role" value="ROLE_USER"></div></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Email ID</label><input readonly="readonly" th:field="*{email}" type="text" class="form-control" placeholder="enter email" th:value="${user.getEmail()}"></div>
+                </div>
+                <div class="row mt-4 align-items-center">
+                   <label for="thing">Enable</label> 
+                  <input th:field="*{enable}" th:checked="${user.isEnable()}" class=".form-check-input" type="checkbox" style="opacity: 1;height: 25px;" id="thing"/>
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+              </form>
+          </div>
+        </div>
+        <div class="card mb-4">
+          <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Order list of [[${user.getDisplayName()}]]</h3>
+        </div>
+        </div>
+        <div th:if="${user.getOrders().size()}>0" class="alert alert-success alert-dismissible">
+          <div class="card-body">
+            <div id="table" class="table-editable">
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-center">Id Order</th>
+                <th class="text-center">Address</th>
+                <th class="text-center">Phone</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Creation Date</th>
+                <th class="text-center">Delivery Date</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+              <tbody >
+                  <tr th:each=" listOrder : ${user.getOrders()}">
+                    <td th:text="${listOrder.getOrderId()}"></td>
+                    <td th:text="${listOrder.getAddress()}"></td>
+                    <td th:text="${listOrder.getPhone()}"></td>
+                    <td th:text="${listOrder.getStatus()}"></td>
+                    <td th:text="${listOrder.getCreationDate()}"></td>
+                    <td th:text="${listOrder.getDeliveryDate()}"></td>
+                    <td>
+                      <span>
+                        <a type="button" class="btn btn-success btn-rounded btn-sm my-0 waves-effect waves-light" 
+                        th:href="@{/Admin/OrderDetail/Show/{id} (id = ${listOrder.orderId})}">Detail
+                        </a>
+                      </span>
+                       <span>
+                        <a type="button" th:attr="onclick='return Del(\'' + ${listOrder.getOrderId()} +  '\');'" class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light" 
+                        th:href="@{/Admin/User/DeleteOrder?id={id} (id = ${listOrder.orderId})}">Delete
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+              </tbody>
+          </table>
+          </div>
+          </div>
+        </div>
+        <div th:if="${user.getOrders().size()}==0" class="alert alert-warning alert-dismissible" style="font-size: 25px;">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong th:text="${user.getEmail()}"></strong><span th:text="' The user has no orders yet'"></span>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

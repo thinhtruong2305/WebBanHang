@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Admin | Order</title>
+<style type="text/css">
+#table {
+	width: 950px;
+	overflow-x: auto;
+	font-size: 35px;
+	font-family: "Tahoma";
+	padding-top: 50px;
+}
+#head{
+	font-weight: bold;
+}
+#pagination {
+	padding-top: 50px;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1>Danh sách hóa đơn</h1>
+		<div th:if="${success}" class="row alert alert-success alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">x</span>
+			</button>
+			<span th:text="${success}"></span>
+		</div>
+		<div class="d-grid gap-2 d-md-flex justify-content-center">
+			<a class="btn btn-primary" th:href="@{/Admin/Order/ASC}"type="button">ASC</a>
+			<a class="btn btn-primary" th:href="@{/Admin/Order/DES}"type="button">DES</a>
+		</div>
+		<div class="container">
+			<div>
+				<table class="table table-borderless table-striped table-dark table-sm">
+					<thead id="head" class="table-info">
+						<th>Mã hóa đơn</th>
+						<th>Tên người dùng</th>
+						<th>Địa chỉ</th>
+						<th>Điện thoại</th>
+						<th>Trạng thái</th>
+						<th>Ngày tạo</th>
+						<th>Ngày giao</th>
+						<th></th>
+					</thead>
+					<tbody th:each="order : ${session.orders.pageList}">
+						<td th:text="${order.orderId}"></td>
+						<td th:text="${order.user} == null ? Unknow : ${order.user.displayName}"></td>
+						<td th:text="${order.address}"></td>
+						<td th:text="${order.phone}"></td>
+						<td th:text="${order.status}"></td>
+						<td th:text="${order.creationDate}"></td>
+						<td th:text="${order.deliveryDate}"></td>
+						<td>
+							<a th:href="@{/Admin/OrderDetail/Show/{id}(id=${order.orderId})}" class="btn btn-outline-info btn-sm" type="button">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+  									<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+  									<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+								</svg>
+						</a></td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<nav id="pagination" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li
+					th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+					<a class="page-link" th:href="@{/Admin/Order/Show}">First</a>
+				</li>
+				<li th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+					<a class="page-link" aria-label="Previous" th:href="@{|${baseUrl}${currentIndex - 1}|}" title='Go to previous page'>
+						<span aria-hidden="true">«</span>
+						<span class="sr-only">Previous</span>
+					</a>
+				</li>
+				<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+					th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+					<a class="page-link" th:href="@{|${baseUrl}${item}|}">
+						<span th:text='${item}'>1</span>
+					</a>
+				</li>
+				<li th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+					<a class="page-link" aria-label="Next" th:href="@{|${baseUrl}${currentIndex + 1}|}" title='Go to next page'>
+						<span aria-hidden="true">»</span>
+						<span class="sr-only">Next</span>
+					</a>
+				</li>
+				<li th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+					<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>

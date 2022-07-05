@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/clientlayout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Organi | Bill</title>
+<style>
+#table {
+	width: 950px;
+	overflow-x: auto;
+	font-family: "Tahoma";
+	padding-top: 50px;
+}
+
+#head {
+	font-weight: bold;
+	color:black;
+}
+
+#pagination {
+	padding-top: 50px;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="d-grid gap-2 d-md-flex justify-content-center">
+			<a class="btn btn-primary" th:href="@{/Client/Payment/RemoveSession}"
+				type="button">Home</a>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Mã hóa đơn: </span>
+				</div>
+				<input th:value="${order.orderId}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Mã và tên: </span>
+				</div>
+				<input th:value="${order.user.userId}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+				<input th:value="${order.user.displayName}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Địa chỉ: </span>
+				</div>
+				<input th:value="${order.address}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Điện thoại: </span>
+				</div>
+				<input th:value="${order.phone}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Trạng thái: </span>
+				</div>
+				<input th:value="${order.status}" class="form-control"
+					aria-label="Large" aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Ngày tạo: </span>
+				</div>
+				<input type="date" th:value="${order.creationDate}"
+					class="form-control" aria-label="Large"
+					aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="input-group input-group-md">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Ngày giao: </span>
+				</div>
+				<input type="date" th:value="${order.deliveryDate}"
+					class="form-control" aria-label="Large"
+					aria-describedby="inputGroup-sizing-sm" readonly />
+			</div>
+		</div>
+		<div class="container">
+			<div id="table">
+				<table
+					class="table table-borderless table-striped table-dark table-sm">
+					<caption>List of Order detail</caption>
+					<thead id="head" class="table-info">
+						<th>Mã hóa đơn chi tiết</th>
+						<th>Tên sản phẩm</th>
+						<th>Số lượng</th>
+						<th>Tổng tiền</th>
+					</thead>
+					<tbody th:each="orderDetail : ${orderDetails.pageList}">
+						<td th:text="${orderDetail.OrderDetailId}"></td>
+						<td th:text="${orderDetail.product.name}"></td>
+						<td th:text="${orderDetail.quantity}"></td>
+						<td th:text="${orderDetail.total}"></td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<nav id="pagination" aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li
+					th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+					<a class="page-link" th:href="@{/Admin/Order/Show}">First</a>
+				</li>
+				<li
+					th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+					<a class="page-link" aria-label="Previous"
+					th:href="@{|${baseUrl}${currentIndex - 1}|}"
+					title='Go to previous page'> <span aria-hidden="true">«</span>
+						<span class="sr-only">Previous</span>
+				</a>
+				</li>
+				<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+					th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+					<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+						th:text='${item}'>1</span>
+				</a>
+				</li>
+				<li
+					th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+					<a class="page-link" aria-label="Next"
+					th:href="@{|${baseUrl}${currentIndex + 1}|}"
+					title='Go to next page'> <span aria-hidden="true">»</span> <span
+						class="sr-only">Next</span>
+				</a>
+				</li>
+				<li
+					th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+					<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</body>
+</html>

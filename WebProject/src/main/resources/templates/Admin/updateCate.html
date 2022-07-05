@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin | Categories</title>
+<style type="text/css">
+#table {
+	width: 950px;
+	overflow-x: auto;
+}
+
+#pagination {
+	padding-top: 50px;
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form th:action="@{/Admin/Categories/Save}" method="post" th:object="${categories}">
+			<div class="form-group">
+				<label for="name">ID </label>
+				<input th:field="*{categoryId}" readonly></input>
+			</div>
+			<div class="form-group">
+				<label for="name">Name </label>
+				<input th:field="*{name}"></input>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+        
+		<div class="container">
+			<div id="table">
+				<table
+					class="table table-borderless table-striped table-dark table-sm">
+					<thead id="head" class="table-info">
+						<th>Product ID</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Unit</th>
+						<th>Discount</th>
+						<th>Image</th>
+						<th>Views</th>
+						<th>Description</th>
+						<th>CreationDate</th>
+						<th></th>
+					</thead>
+					<!--Phân trang -->
+					<tbody th:each="product : ${session.products.pageList}">
+						<td th:text="${product.productId}"></td>
+						<td th:text="${product.name}"></td>
+						<td th:text="${product.price}"></td>
+						<td th:text="${product.quantity}"></td>
+						<td th:text="${product.unit}"></td>
+						<td th:text="${product.Discount}"></td>
+						<!--Cái này tạm thời về sau sẽ thay bằng img-->
+						<td th:text="${product.image}"></td>
+						<td th:text="${product.views}"></td>
+						<td th:text="${product.description}"></td>
+						<td th:text="${product.creationDate}"></td>
+						<!--Chừa nút-->
+						<td></td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+			  <li th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+				<a class="page-link" th:href="@{/Admin/Categories/Update/page/1}">First</a>
+			  </li>
+			  <li th:class="${currentIndex == 1}? 'page-item disabled': 'page-item'">
+				<a class="page-link" aria-label="Previous" th:href="@{|${baseUrl}${currentIndex - 1}|}" title='Go to previous page'>
+				  <span aria-hidden="true">«</span>
+				  <span class="sr-only">Previous</span></a>
+			  </li>
+			  <li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}" th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+				<a class="page-link" th:href="@{|${baseUrl}${item}|}">
+				  <span th:text='${item}'>1</span>
+			  </a>
+			  </li>
+			  <li th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+				<a class="page-link" aria-label="Next" th:href="@{|${baseUrl}${currentIndex + 1}|}" title='Go to next page'>
+				  <span aria-hidden="true">»</span>
+				  <span class="sr-only">Next</span>
+				</a>
+			  </li>
+			  <li th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+				<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+			  </li>
+			</ul>
+		  </nav>
+	</div>
+</body>
+</html>

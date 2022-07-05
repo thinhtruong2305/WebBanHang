@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<h1 class="text-center">Product</h1>
+				<div class="card-body">
+					<form th:action="@{/Admin/Product/saveProduct}"
+						th:object="${product}" method="post" enctype="multipart/form-data">
+
+						<div class="form-group">
+							<label>Product Id</label> <input type="text" id="productId"
+								th:field="${product.productId}" class="form-control" readonly />
+
+						</div>
+						<div class="form-group">
+							<label for="name">Product name</label> <input type="text"
+								id="name" th:field="${product.name}" class="form-control"
+								aria-describedby="nameHid" placeholder="Enter Name Product" />
+							<small th:if="${#fields.hasErrors('name')}" id="nameHid"
+								class="form-text text-muted">Product id is required</small>
+						</div>
+
+						<div class="form-group">
+							<label for="price">Price</label> <input type="text" id="price"
+								th:field="${product.price}" class="form-control"
+								placeholder="Enter Price Product" />
+
+						</div>
+
+						<div class="form-group">
+							<label for="quantity">Quantity</label> <input type="text"
+								id="quantity" th:field="${product.quantity}"
+								class="form-control" placeholder="Enter Quantity Product" />
+
+						</div>
+
+
+						<div class="form-group">
+							<label for="unit">Unit</label> <input type="text" id="unit"
+								class="form-control" th:field="${product.unit}"
+								aria-describedby="unitHid" placeholder="Enter Unit Product">
+							<small th:if="${#fields.hasErrors('unit')}" id="unitHid"
+								class="form-text text-muted">Unit id is required</small>
+						</div>
+						<div class="form-group">
+							<label for="image">Image</label>
+							<div class="img-container" th:field="${product.image}"
+								th:if="${product.image}">
+								<img th:src="@{${product.photosImagePath}}" width="500px"
+									height="300px" />
+									<input type="file" onchange="chooseFile(this)" name="image"
+									id="image" class="form-control-file"
+									th:filed="${product.image}" aria-describedby="imageHid"
+									apccept="image/png, image/jpeg" />
+							</div>
+							<div class="img-container" th:field="${product.image}" th:unless="${product.image}">
+								<input type="file" onchange="chooseFile(this)" name="image"
+									id="image" class="form-control-file"
+									th:filed="${product.image}" aria-describedby="imageHid"
+									apccept="image/png, image/jpeg" />
+							</div>
+
+							<small id="imageHid" class="form-text text-muted">Product
+								image is required</small>
+						</div>
+						<div class="form-group">
+							<label for="view">View</label> <input type="text" id="view"
+								class="form-control" th:field="${product.views}"
+								placeholder="Enter View Product" />
+						</div>
+						<div class="form-group">
+							<label>Discount</label> <input type="text" id="Discount"
+								class="form-control" th:field="${product.discount}"
+								placeholder="Enter Discount Product" />
+						</div>
+
+
+						<div class="form-group">
+							<label>Description</label> <input type="text" id="description"
+								class="form-control" th:field="${product.description}"
+								placeholder="Enter Description Product" />
+
+						</div>
+
+
+						<div class="form-group">
+							<label for="creationDate">CreationDate</label> <input type="date"
+								id="creationDate" class="form-control"
+								th:field="${product.creationDate}"
+								aria-describedby="creationDatetHid"
+								placeholder="Enter Discount Product" /> <small
+								th:if="${#fields.hasErrors('creationDate')}"
+								id="creationDatetHid" class="form-text text-muted">CreationDate
+								id is required</small>
+						</div>
+
+
+						<div class="form-group">
+
+							<label for="category">Category</label>
+							<select	name="categorySelect" class="form-control" id="categoryId"
+								aria-label="multiple select example">
+								<option th:each="category :${categorys}"
+									th:field="${product.category}"
+									th:value="${category.categoryId}" th:text="${category.name}">
+							</select>
+
+						</div>
+
+						<!-- <div class="form-group">
+								<label for="category">category</label> 
+								<input type="text" id="categoryId" class="form-control" th:field="${product.category}" aria-describedby="categorytHid" placeholder="Enter Category Product" />
+								<small  th:if="${#fields.hasErrors('category')}" id="categorytHid" class="form-text text-muted">Category id is required</small>
+							</div> -->
+						<div class="form-group">
+							<label for="brand">Category</label>
+							<select	name="brandSelect" class="form-control" id="brand" aria-label="multiple select example">
+								<option th:each="brand :${brands}" 
+									th:field="${product.brand}"
+									th:value="${brand.brandId}"
+									th:text="${brand.name}">
+							</select>
+						</div>
+						<div class="box-footer">
+							<button type="submit" value="submit" class="btn btn-primary">Submit</button>
+							<a th:href="@{/Admin/Product/}" class="btn btn-warning"
+								role="button btn-danger">Cancel</a>
+
+						</div>
+					</form>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script>
+		function chooseFile(fileInput) {
+			if (fileInput.file && fileInput.file[0]) {
+				var reader = new FileRender;
+
+				render.onload = function(e) {
+					$('#img').attr('src', e.target.result);
+				}
+
+				reader.readAsDataURL(fileInput.file[0]);
+			}
+		}
+	</script>
+</div>
+</body>
+</html>

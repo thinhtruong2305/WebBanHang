@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" th:href="@{/Client/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/Client/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/Client/css/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/Client/css/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/Client/css/jquery-ui.min.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" />
+    <link rel="stylesheet" th:href="@{/Client/css/style.css}" type="text/css">
+</head>
+
+<body>
+    
+	<div th:replace="fragments/Client/header:: header"></div>
+
+	<div layout:fragment="content"></div>
+
+	<div th:replace="fragments/Client/footer:: footer"></div>
+
+    <!-- Js Plugins -->
+    <script th:src="@{/Client/js/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/Client/js/bootstrap.min.js}"></script>
+    <script th:src="@{/Client/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/Client/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/Client/js/jquery.slicknav.js}"></script>
+    <script th:src="@{/Client/js/mixitup.min.js}"></script>
+    <script th:src="@{/Client/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/Client/js/main.js}"></script>
+
+
+
+</body>
+
+</html>

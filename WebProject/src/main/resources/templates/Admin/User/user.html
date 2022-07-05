@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layouts/adminlayout.html}">
+<head>
+ 
+</head>
+<body>
+  <!-- Editable table -->
+<div layout:fragment="content">
+  <div th:if="${action}=='Warning!'" class="alert alert-warning alert-dismissible" style="font-size: 25px;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong th:text="${action}"></strong><span th:text="' '+${message}"></span>
+  </div>
+  <div th:if="${action}=='Error!'" class="alert alert-danger alert-dismissible" style="font-size: 25px;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong th:text="${action}"></strong><span th:text="' '+${message}"></span>
+  </div>
+  <div th:if="${action}=='Success'" class="alert alert-success alert-dismissible" style="font-size: 25px;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong th:text="${action}"></strong><span th:text="' '+${message}"></span>
+  </div>
+    <div class="card mb-4">
+        <h3 class="card-header text-center font-weight-bold text-uppercase py-4">User list</h3>
+        <div id="tbodyUser" class="card-body">
+        </div>
+    </div>
+</div>
+</body>
+</html>
